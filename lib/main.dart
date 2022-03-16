@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:isoweek/isoweek.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Vilken vecka',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English, no country code
+        Locale('sv', ''), // Swedish, no country code
+      ],
+      locale: const Locale('sv'),
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -43,12 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Week currentWeek = Week.current();
 
   List<Widget> daysWidgets(List<DateTime> days) {
-    final dateFormat = DateFormat('EEE');
     String locale = Localizations.localeOf(context).languageCode;
+    final dateFormat = DateFormat('EEE', locale);
 
     List<Widget> widgets = [];
     days.forEach((element) {
-      String readableDay = dateFormat.format(element);
+      String readableDay = dateFormat.format(
+        element,
+      );
       widgets.add(Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(children: [
@@ -58,12 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
             style: GoogleFonts.firaSans(
                 textStyle: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: readableDay == 'Sun' ? Colors.red : Colors.black)),
+                    color: readableDay == 'sön' ? Colors.red : Colors.black)),
           ),
           Text(
             readableDay,
             style: TextStyle(
-                color: readableDay == 'Sun' ? Colors.red : Colors.black),
+                color: readableDay == 'sön' ? Colors.red : Colors.black),
           )
         ]),
       ));
